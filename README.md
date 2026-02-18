@@ -86,14 +86,13 @@ Researchers interested in collaboration, validation, or technical discussion are
 
 ## Hardware Platform
 
-The Ant Bot simulation is based on a hexapod robotic platform designed for terrain navigation research.  
-The mechanical design, kinematic analysis, and fabrication workflow are maintained in a dedicated hardware repository.
+This project is based on a custom hexapod robotic platform developed for terrain navigation research.
 
-The hardware repository is currently private while related work is being prepared for academic publication.  
-It will be released publicly once the research is finalized.
+The hardware platform overview is available here:
 
-This integrated design approach allows both the physical robot and the simulation framework to evolve together, supporting validation of locomotion and navigation strategies.
-
+```bash
+https://github.com/adithya2204/hexapod-terrain-platform
+```
 
 ## Author
 
