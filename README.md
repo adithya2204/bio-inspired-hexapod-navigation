@@ -46,6 +46,8 @@ Simulation trials demonstrated:
 - Improved heading stability during rotations  
 - Reduced drift after yaw realignment corrections  
 
+![Start Position](Start%20position.png)
+
 Representative navigation traces and heading-correction graphs are included in this repository.
 
 ---
