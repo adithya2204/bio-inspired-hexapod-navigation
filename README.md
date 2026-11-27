@@ -1,107 +1,71 @@
-# Ant Bot — Bio-Inspired Hexapod Navigation (Research Summary)
+# Ant Bot: Bio-Inspired Hexapod Navigation (Research Summary)
 
-Ant Bot is a ROS 2-based hexapod simulation exploring bio-inspired locomotion and navigation strategies for multi-legged robots.  
-The project investigates how insect-inspired behaviors such as tripod gait walking and path integration can be applied to autonomous robotic navigation in simulation.
+Ant Bot is a ROS 2 hexapod simulation that borrows two ideas from desert ants: **tripod-gait walking** and **path integration**, meaning it keeps track of its own heading and distance so it can walk straight home without GPS or a map. The robot model is a URDF/Xacro of [my hexapod platform](https://github.com/adithya2204/hexapod-terrain-platform), simulated in Gazebo with `ros2_control` and an Inertial Measurement Unit (IMU).
 
-The system is implemented in ROS 2 Humble and evaluated in a physics-based Gazebo environment using a custom URDF/Xacro robot model and closed-loop control pipeline.
-
----
-
-## Research Focus
-
-This work explores:
-
-- Bio-inspired locomotion for hexapod robots  
-- Robust gait coordination under directional control  
-- Dead-reckoning-based navigation (path integration)  
-- Stability during turning and full-rotation maneuvers  
-- Simulation-driven evaluation of legged navigation strategies  
-
-The objective is to study how insect navigation principles can be translated into control frameworks for autonomous legged systems.
+![Ant Bot at its start position in Gazebo](Start%20position.png)
 
 ---
 
-## System Overview
+## How a run works
 
-### Tripod Gait Controller
-A custom controller coordinating alternating leg tripods to ensure stable walking and directional control.
+```mermaid
+flowchart LR
+    A["Start at origin"] --> B["Explore<br/>(random walk, tripod gait)"]
+    B --> C["Integrate heading and<br/>distance travelled"]
+    C --> D["Turn towards home<br/>(yaw correction)"]
+    D --> E["Walk back to origin"]
+```
 
-### Path Integration Navigation
-The `ant_navigator` node enables random exploration followed by homing to the origin using heading estimation and yaw correction.
+1. The robot leaves the origin and explores using a tripod gait.
+2. As it walks, the `ant_navigator` node keeps a running estimate of where home is, from its heading (IMU yaw) and the distance it has walked.
+3. To return, it turns to face home, corrects its yaw, and walks back to the origin.
 
-### Physics-Based Simulation
-A complete URDF/Xacro robot model integrated with Gazebo plugins, IMU sensing, and ros2_control interfaces.
+## System
 
-### Yaw Stabilization Logic
-Additional correction mechanisms were introduced to reduce drift and vibration during full rotations and homing maneuvers.
+| Part | Role |
+|---|---|
+| Tripod gait controller | Alternates the two leg tripods (R1, R3, L2 and L1, L3, R2) for stable walking and steering |
+| `ant_navigator` | Exploration, then homing to the origin by path integration with heading estimation |
+| Yaw stabilisation | Extra correction to cut drift and vibration during full rotations and homing |
+| Simulation | URDF/Xacro model with Gazebo plugins, IMU sensing and `ros2_control` interfaces |
 
----
+The tripod and wave gaits were also run on the physical hexapod. The navigation results come from simulation.
 
-## Experimental Observations
+## Observations
 
-Simulation trials demonstrated:
+In simulation trials:
 
-- Stable tripod locomotion under directional commands  
-- Successful return-to-origin behavior using path integration  
-- Improved heading stability during rotations  
-- Reduced drift after yaw realignment corrections  
-
-![Start Position](Start%20position.png)
-
-Representative navigation traces and heading-correction graphs are included in this repository.
-
----
+- Tripod locomotion stayed stable under direction commands
+- The robot returned to the origin using path integration
+- Heading held better during rotations once yaw correction was added
+- Drift dropped after yaw realignment
 
 ## Demonstration
 
-A full demonstration video is available here:  
-**[https://drive.google.com/file/d/1WqY7ZmOZIHpbWZRTRdDwb_wMEqJCbax2/view?usp=sharing]**
-
-The demo shows:
-
-- Exploration phase  
-- Heading estimation  
-- Homing behavior  
-- Yaw correction during return  
+[Demo video (Google Drive)](https://drive.google.com/file/d/1WqY7ZmOZIHpbWZRTRdDwb_wMEqJCbax2/view?usp=sharing): exploration, heading estimation, homing and yaw correction on the way back.
 
 ---
 
-## Publication Status
+## Status
 
-The full implementation is currently private while the work is being prepared for academic publication.
+The implementation is private while the work is under review for publication. If you're interested in collaborating, validating the work or discussing it, please get in touch.
 
-Researchers interested in collaboration, validation, or technical discussion are welcome to contact me for access.
+## Tools
 
----
+ROS 2 Humble · Gazebo Classic · Python (NumPy, transforms3d) · `ros2_control` · URDF/Xacro
 
-## Tools & Frameworks
+## Related
 
-- ROS 2 Humble  
-- Gazebo Classic  
-- Python (NumPy, transforms3d)  
-- ros2_control  
-- URDF/Xacro modeling  
+- [hexapod-terrain-platform](https://github.com/adithya2204/hexapod-terrain-platform): the physical hexapod this model is based on
 
 ---
-
-## Hardware Platform
-
-This project is based on a custom hexapod robotic platform developed for terrain navigation research.
-
-The hardware platform overview is available here:
-
-```bash
-https://github.com/adithya2204/hexapod-terrain-platform
-```
 
 ## Author
 
-**Adithya Pothula**  
-Robotics Researcher — Autonomous Navigation & Legged Systems  
+**Adithya Pothula**, Robotics Researcher (Autonomous Navigation and Legged Systems)
 
-GitHub: https://github.com/adithya2204  
-Google Scholar: https://scholar.google.com/citations?hl=en&user=NI9WpkQAAAAJ
+GitHub: [adithya2204](https://github.com/adithya2204) · [Google Scholar](https://scholar.google.com/citations?hl=en&user=NI9WpkQAAAAJ)
 
----
+## License
 
-
+BSD 3-Clause. See [LICENSE](LICENSE).
